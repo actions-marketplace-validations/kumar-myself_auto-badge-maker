@@ -1,13 +1,23 @@
 name: Test Badge Maker
-on: [push]
+on: [push, workflow_dispatch]
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
     steps:
-    - uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-    - uses: ./
-      with:
-        text: '⭐ Tested!'
-    - uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Test the action
+        uses: ./
+        with:
+          text: 'Tested'
+          color: 'green'
+      
+      - name: Show result
+        run: |
+          echo "✅ Badge action executed successfully!"
+          cat README.md
