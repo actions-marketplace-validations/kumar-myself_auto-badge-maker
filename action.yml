@@ -1,0 +1,20 @@
+name: 'Auto Badge Maker'
+description: 'Creates beautiful badges for READMEs automatically!'
+branding:
+  icon: 'award'
+  color: 'blue'
+inputs:
+  text:
+    description: 'Badge text'
+    default: '⭐ Awesome!'
+  color:
+    description: 'Badge color'
+    default: 'blue'
+runs:
+  using: 'composite'
+  steps:
+    - name: Generate badge
+      shell: bash
+      run: |
+        echo "![${{ inputs.text }}](https://img.shields.io/badge/${{ inputs.text }}-${{ inputs.color }}-blue)" >> README.md
+        echo "Badge created! 🎉"
