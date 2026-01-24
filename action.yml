@@ -3,18 +3,29 @@ description: 'Creates beautiful badges for READMEs automatically!'
 branding:
   icon: 'award'
   color: 'blue'
+
 inputs:
   text:
     description: 'Badge text'
-    default: '⭐ Awesome!'
+    required: false
+    default: 'Awesome'
   color:
     description: 'Badge color'
+    required: false
     default: 'blue'
+
+outputs:
+  badge-markdown:
+    description: 'The generated badge markdown'
+    value: ${{ steps.generate.outputs.badge }}
+
 runs:
   using: 'composite'
   steps:
     - name: Generate badge
+      id: generate
       shell: bash
       run: |
-        echo "![${{ inputs.text }}](https://img.shields.io/badge/${{ inputs.text }}-${{ inputs.color }}-blue)" >> README.md
-        echo "Badge created! 🎉"
+        BADGE="![Badge](https://img.shields.io/badge/${{ inputs.text }}-${{ inputs.color }})"
+        echo "badge=${BADGE}" >> $GITHUB_OUTPUT
+        echo "Badge created: ${BADGE}"
